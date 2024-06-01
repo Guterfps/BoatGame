@@ -1,5 +1,5 @@
 
-import { BoatGame } from "./boat_game/boat_game";
+import { BoatGame } from "./modules/boat_game";
 
 function main() {
     let game = new BoatGame();

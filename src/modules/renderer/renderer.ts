@@ -2,6 +2,7 @@
 export class Renderer {
     readonly canvas = <HTMLCanvasElement>document.getElementById("BoatGame");
     readonly context;
+    
     constructor() {
         if (this.canvas) {
             this.context = this.canvas.getContext("2d");

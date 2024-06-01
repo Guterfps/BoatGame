@@ -24,11 +24,11 @@ export class BoatGame {
     private state: GameState = GameState.PUSE;
     private renderer = new Renderer(); 
 
-    Add(actor : Actor) {
+    AddActor(actor : Actor) {
         this.actors.push(actor);
     }
 
-    RemoveEntety(actor : Actor) {
+    RemoveActor(actor : Actor) {
         let indx = this.actors.indexOf(actor);
         if (indx != -1) {
             this.actors.splice(indx, 1);
