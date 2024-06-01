@@ -1,4 +1,6 @@
 
+import { Renderer } from "./renderer/renderer";
+
 export interface Actor {
     TakeInput(): void;
     Update(): void;
@@ -20,6 +22,7 @@ export enum GameState { RUN, PUSE, GAME_OVER, EXIT };
 export class BoatGame {
     private actors: Array<Actor> = [];
     private state: GameState = GameState.PUSE;
+    private renderer = new Renderer(); 
 
     Add(actor : Actor) {
         this.actors.push(actor);
@@ -60,6 +63,7 @@ export class BoatGame {
 
     private Display() {
         this.actors.forEach((act) => {act.Draw()});
+        this.renderer.Render();
     }
 }
 
