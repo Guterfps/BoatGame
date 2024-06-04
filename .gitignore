@@ -2,3 +2,5 @@ node_modules/
 *.js
 *.js.map
 *.tsbuildinfo
+!webpack.config.js
+!bundle.js
