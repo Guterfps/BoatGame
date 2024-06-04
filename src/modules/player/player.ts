@@ -6,6 +6,10 @@ export class Player {
     private life_points: number = 3;
     private position: Position2D = {x:0 , y:0};
 
+    constructor(pos: Position2D) {
+        this.position = pos;
+    }
+
     GetScore(): number {
         return this.score;
     }

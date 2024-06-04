@@ -9,16 +9,34 @@ export class Renderer {
         } else {
             console.log("canvas is null");
         }
+
     }
 
-    Render() {
+    RenderRect(
+        x: number,
+        y: number,
+        w: number,
+        h: number,
+        color: string) 
+    {
         if (this.context) {
-            this.context.fillStyle = "rgb(200 0 0)";
-            this.context.fillRect(10, 10, 50, 50);
-    
-            this.context.fillStyle = "rgb(0 0 200 / 50%)";
-            this.context.fillRect(30, 30, 50, 50);
+            this.context.beginPath();
+            this.context.fillStyle = color;
+            this.context.fillRect(x, y, w, h);
+            this.context.closePath();
         }
+    }
+
+    Clear() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    GetWidth(): number {
+        return this.canvas.width;
+    }
+
+    GetHeight(): number {
+        return this.canvas.height
     }
     
 }

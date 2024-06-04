@@ -1,5 +1,8 @@
 
 import { Renderer } from "./renderer/renderer";
+import { Player } from "./player/player";
+import { PlayerDisplay } from "./player/player_display";
+import { PlayerController } from "./player/player_controler";
 
 export interface Actor {
     TakeInput(): void;
@@ -18,11 +21,16 @@ export class Position2D {
 }
 
 export enum GameState { RUN, PUSE, GAME_OVER, EXIT };
+export enum Direction { LEFT = -1, RIGHT = 1, UP = 2, DOWN = -2, NONE = 0};
 
 export class BoatGame {
-    private actors: Array<Actor> = [];
     private state: GameState = GameState.PUSE;
-    private renderer = new Renderer(); 
+    private renderer: Renderer = new Renderer();
+    private actors: Array<Actor> = [];
+
+    constructor() {
+        this.Run = this.Run.bind(this);
+    }
 
     AddActor(actor : Actor) {
         this.actors.push(actor);
@@ -35,13 +43,21 @@ export class BoatGame {
         }
     }
 
-    Run() {
-        this.state = GameState.RUN as GameState;
+    Init() {
+        this.state = GameState.RUN;
+        this.AddActor(new PlayerController(
+                        new Player(new Position2D(400, 400)), 
+                        new PlayerDisplay(this.renderer)));
+    }
 
-        while (this.state !== GameState.EXIT) {
+    Run() {
+        if (this.state !== GameState.EXIT) {
             this.HandleInput();
             this.UpdateGame();
+            
+            this.renderer.Clear();
             this.Display();
+            requestAnimationFrame(this.Run);
         }
     }
 
@@ -63,7 +79,6 @@ export class BoatGame {
 
     private Display() {
         this.actors.forEach((act) => {act.Draw()});
-        this.renderer.Render();
     }
 }
 
