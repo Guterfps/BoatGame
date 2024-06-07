@@ -11,7 +11,7 @@ export class PlayerDisplay {
 
     DrawPlayer(player: Player): void {
         let pos = player.GetPosition();
-        this.renderer.RenderRect(pos.x, pos.y, 20 , 20, "rgb(200 0 0)");
+        this.renderer.RenderRect(pos.x, pos.y, 70 , 10, "rgb(200 0 0)");
     }
 
     SetRenderer(renderer: Renderer) {

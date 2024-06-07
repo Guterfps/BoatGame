@@ -1,12 +1,13 @@
 
 import { Renderer } from "./renderer/renderer";
-import { Player } from "./player/player";
-import { PlayerDisplay } from "./player/player_display";
-import { PlayerController } from "./player/player_controler";
+import { PlayerController, Player, PlayerDisplay } from "./player/modules";
+import { PlaneController, Plane, PlaneDisplay } from "./plane/modules" ;
+import { ParachuteController, Parachute, ParachuteDisplay } from "./parachute/modules";
+import { Events } from "./events/events";
 
 export interface Actor {
     TakeInput(): void;
-    Update(): void;
+    Update(events: Events): void;
     Draw(): void;
 }
 
@@ -21,12 +22,13 @@ export class Position2D {
 }
 
 export enum GameState { RUN, PUSE, GAME_OVER, EXIT };
-export enum Direction { LEFT = -1, RIGHT = 1, UP = 2, DOWN = -2, NONE = 0};
+export enum Direction { LEFT = -1, RIGHT = 1, UP = -1, DOWN = 1, NONE = 0};
 
 export class BoatGame {
-    private state: GameState = GameState.PUSE;
-    private renderer: Renderer = new Renderer();
-    private actors: Array<Actor> = [];
+    private state = GameState.PUSE;
+    private renderer = new Renderer();
+    private actors = new Array<Actor>;
+    private events = new Events;
 
     constructor() {
         this.Run = this.Run.bind(this);
@@ -48,6 +50,20 @@ export class BoatGame {
         this.AddActor(new PlayerController(
                         new Player(new Position2D(400, 400)), 
                         new PlayerDisplay(this.renderer)));
+        this.AddActor(new PlaneController(
+                        new Plane(this.renderer.GetWidth(), 50),
+                        new PlaneDisplay(this.renderer)));
+        
+        this.events.AddEventNotify("spawn parachute", 
+                                (pos: Position2D) => {
+                        this.AddActor(new ParachuteController(
+                            new Parachute(pos.x, pos.y),
+                            new ParachuteDisplay(this.renderer)));
+                    });
+        this.events.AddEventNotify("despawn parachute", 
+                        (actor: Actor) => {
+                            this.RemoveActor(actor);
+                        });
     }
 
     Run() {
@@ -74,7 +90,7 @@ export class BoatGame {
     }
 
     private UpdateGame() {
-        this.actors.forEach((act) => {act.Update()});
+        this.actors.forEach((act) => {act.Update(this.events)});
     }
 
     private Display() {
