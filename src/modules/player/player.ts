@@ -5,12 +5,11 @@ export class Player {
     private score: number = 0;
     private life_points: number = 3;
     private position: Position2D = {x:0 , y:0};
-    private readonly width = 70;
-    private readonly hieght = 10;
+    private readonly width = 100;
+    private readonly hieght = 50;
 
     constructor(pos: Position2D) {
         this.position = pos;
-
     }
 
     GetScore(): number {

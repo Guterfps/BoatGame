@@ -33,7 +33,7 @@ export class PlaneController implements Actor {
     }
 
     Draw(): void {
-        this.display.DrawPlane(this.plane);
+        this.display.DrawPlane(this.plane.GetShape());
     }
 
     SpawnParachute(events: Events): void {

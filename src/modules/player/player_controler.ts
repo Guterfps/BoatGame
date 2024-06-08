@@ -40,7 +40,7 @@ export class PlayerController implements Actor {
     }
 
     Draw(): void {
-        this.display.DrawPlayer(this.player);
+        this.display.DrawPlayer(this.player.GetShape());
         this.display.DrawLifePoints(this.player.GetLifePoints());
         this.display.DrawScore(this.player.GetScore());
     }

@@ -1,20 +1,23 @@
 
-import { Player } from "./player";
 import { Renderer } from "../renderer/renderer";
+import { Rectangle } from "../utils/utils";
 
 export class PlayerDisplay {
     private renderer: Renderer;
-    private ui_font = "16px Arial";
+    private ui_font = "24px Arial";
     private ui_fillStyle = "#0095DD";
+    private image = new Image();
 
     constructor(renderer: Renderer) {
         this.renderer = renderer;
+        this.image.src = "../../../assets/images/boat.png";
     }
 
-    DrawPlayer(player: Player): void {
-        let {pos, w, h} = player.GetShape();
+    DrawPlayer(player_shape: Rectangle): void {
+        let {pos, w, h} = player_shape;
         let {x, y} = pos;
-        this.renderer.RenderRect(x, y, w, h, "rgb(200 0 0)");
+        // this.renderer.RenderRect(x, y, w, h, "rgb(200 0 0)");
+        this.renderer.context.drawImage(this.image, x, y, w, h);
     }
 
     DrawScore(score: number): void {

@@ -3,8 +3,8 @@ import { Position2D, Rectangle } from "../utils/utils";
 
 export class Parachute {
     private position: Position2D;
-    private readonly width = 20;
-    private readonly hiegth = 30;
+    private readonly width = 40;
+    private readonly hiegth = 60;
 
     constructor(pos: Position2D) {
         this.position = pos;

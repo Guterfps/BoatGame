@@ -13,9 +13,14 @@ export class BoatGame {
     private actors = new Array<Actor>;
     private events = new Events;
     private final_score = 0;
+    private background_image = new Image();
+    private sea_image = new Image();
+    private sea_lvl = 200;
 
     constructor() {
         this.Run = this.Run.bind(this);
+        this.background_image.src = "../../../assets/images/background.png";
+        this.sea_image.src = "../../../assets/images/sea.png";
     }
 
     AddActor(actor : Actor) {
@@ -32,12 +37,14 @@ export class BoatGame {
     Init() {
         this.state = GameState.RUN;
         let player_ctrl = new PlayerController(
-                        new Player(new Position2D(400, 400)), 
+                        new Player(new Position2D(
+                            this.renderer.GetWidth() / 2, 
+                            this.renderer.GetHeight() * 0.65)), 
                         new PlayerDisplay(this.renderer));
         
         this.AddActor(player_ctrl);
         this.AddActor(new PlaneController(
-                        new Plane(this.renderer.GetWidth(), 50),
+                        new Plane(new Position2D(this.renderer.GetWidth(), 50)),
                         new PlaneDisplay(this.renderer)));
         
         this.events.AddEventNotify("spawn parachute", 
@@ -100,6 +107,13 @@ export class BoatGame {
     }
 
     private Display(): void {
+        const canv_w = this.renderer.GetWidth();
+        const canv_h = this.renderer.GetHeight();
+        this.renderer.context.drawImage(this.background_image, 
+                                        0, 0, canv_w, canv_h);
+        this.renderer.context.drawImage(this.sea_image, 
+            0, canv_h - this.sea_lvl, canv_w, this.sea_lvl);
+
         this.actors.forEach((act) => {act.Draw()});
     }
 
@@ -108,11 +122,11 @@ export class BoatGame {
         ctx.font = "32px Arial";
         ctx.fillStyle = "#0095DD";
         ctx.fillText(`Game Over Final Score: ${this.final_score}`, 
-                    this.renderer.GetWidth() / 2, 
-                    this.renderer.GetHeight() / 2);
+                    this.renderer.GetWidth() / 2 - 200, 
+                    this.renderer.GetHeight() / 2 - 50);
         ctx.fillText(`Click to restart`, 
-                    this.renderer.GetWidth() / 2, 
-                    this.renderer.GetHeight() / 2 + 50);
+                    this.renderer.GetWidth() / 2 - 100, 
+                    this.renderer.GetHeight() / 2);
     }
 
     private ResetGame = (): void => {

@@ -42,6 +42,6 @@ export class ParachuteController implements Actor {
     }
 
     Draw(): void {
-        this.display.DrawParachute(this.Parachute);
+        this.display.DrawParachute(this.Parachute.GetShape());
     }
 }

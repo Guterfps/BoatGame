@@ -1,17 +1,21 @@
 
 import { Renderer } from "../renderer/renderer";
-import { Plane } from "./plane";
+import { Rectangle } from "../utils/utils";
 
 export class PlaneDisplay {
     private renderer: Renderer;
+    private image = new Image();
 
     constructor(renderer: Renderer) {
         this.renderer = renderer;
+        this.image.src = "../../../assets/images/plane.png"; 
     }
 
-    DrawPlane(plane: Plane): void {
-        let pos = plane.GetPosition();
-        this.renderer.RenderRect(pos.x, pos.y, 100 , 20, "rgb(0 0 200)");
+    DrawPlane(plane_shape: Rectangle): void {
+        let {pos, w, h} = plane_shape;
+        let {x, y} = pos;
+        // this.renderer.RenderRect(pos.x, pos.y, 100 , 20, "rgb(0 0 200)");
+        this.renderer.context.drawImage(this.image, x, y, w, h);
     }
 
     SetRenderer(renderer: Renderer) {
