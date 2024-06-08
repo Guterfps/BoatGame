@@ -18,15 +18,15 @@ module.exports = {
   },
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'docs'),
   },
   plugins: [
     new HtmlWebpackPlugin({
         title: 'Boat Game', 
-        template: 'dist/template.html' }) 
+        template: 'docs/template.html' }) 
    ],
   devServer: {
-    static: path.join(__dirname, "dist"),
+    static: path.join(__dirname, "docs"),
     compress: true,
     port: 4000,
   },
