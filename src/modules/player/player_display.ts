@@ -1,6 +1,7 @@
 
 import { Renderer } from "../renderer/renderer";
 import { Rectangle } from "../utils/utils";
+import BouatImg from '../../../assets/images/boat.png';
 
 export class PlayerDisplay {
     private renderer: Renderer;
@@ -10,7 +11,7 @@ export class PlayerDisplay {
 
     constructor(renderer: Renderer) {
         this.renderer = renderer;
-        this.image.src = "../../../assets/images/boat.png";
+        this.image.src = BouatImg;
     }
 
     DrawPlayer(player_shape: Rectangle): void {

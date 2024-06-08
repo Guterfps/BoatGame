@@ -13,7 +13,7 @@ module.exports = {
       },
       {
         test: /\.png/,
-        type: 'asset/resource'
+        type: 'asset/resource',
       },
     ],
   },
@@ -23,6 +23,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'docs'),
+    publicPath: 'auto',
   },
   plugins: [
     new HtmlWebpackPlugin({

@@ -6,6 +6,8 @@ import { ParachuteController, Parachute, ParachuteDisplay } from "./parachute/mo
 import { Events } from "./events/events";
 import { GameState, Actor, Position2D } from "./utils/utils";
 import { RectCollisionDetector } from "./collision_detector/rect_collision";
+import BackGroundImg from "../../assets/images/background.png";
+import SeaImg from "../../assets/images/sea.png";
 
 export class BoatGame {
     private state = GameState.PUSE;
@@ -19,8 +21,8 @@ export class BoatGame {
 
     constructor() {
         this.Run = this.Run.bind(this);
-        this.background_image.src = "../../../assets/images/background.png";
-        this.sea_image.src = "../../../assets/images/sea.png";
+        this.background_image.src = BackGroundImg;
+        this.sea_image.src = SeaImg;
     }
 
     AddActor(actor : Actor) {

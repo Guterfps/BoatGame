@@ -1,6 +1,7 @@
 
 import { Renderer } from "../renderer/renderer";
 import { Rectangle } from "../utils/utils";
+import ParachuteImg from '../../../assets/images/parachutist.png';
 
 export class ParachuteDisplay {
     private renderer: Renderer;
@@ -8,7 +9,7 @@ export class ParachuteDisplay {
 
     constructor(renderer: Renderer) {
         this.renderer = renderer;
-        this.image.src = "../../../assets/images/parachutist.png";
+        this.image.src = ParachuteImg;
     }
 
     DrawParachute(parachute_shape: Rectangle): void {

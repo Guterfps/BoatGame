@@ -1,6 +1,7 @@
 
 import { Renderer } from "../renderer/renderer";
 import { Rectangle } from "../utils/utils";
+import PlaneImg from '../../../assets/images/plane.png';
 
 export class PlaneDisplay {
     private renderer: Renderer;
@@ -8,7 +9,7 @@ export class PlaneDisplay {
 
     constructor(renderer: Renderer) {
         this.renderer = renderer;
-        this.image.src = "../../../assets/images/plane.png"; 
+        this.image.src = PlaneImg; 
     }
 
     DrawPlane(plane_shape: Rectangle): void {
