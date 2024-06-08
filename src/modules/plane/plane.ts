@@ -1,5 +1,5 @@
 
-import { Position2D } from "../boat_game";
+import { Position2D } from "../utils/utils";
 
 export class Plane {
     private position: Position2D;

@@ -10,8 +10,9 @@ export class ParachuteDisplay {
     }
 
     DrawParachute(parachute: Parachute): void {
-        let pos = parachute.GetPosition();
-        this.renderer.RenderRect(pos.x, pos.y, 20 , 30, "rgb(0 200 0)");
+        let {pos, w, h} = parachute.GetShape();
+        let {x, y} = pos;
+        this.renderer.RenderRect(x, y, w, h, "rgb(0 200 0)");
     }
 
     SetRenderer(renderer: Renderer) {

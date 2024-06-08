@@ -1,13 +1,16 @@
 
-import { Position2D } from "../boat_game";
+import { Position2D, Rectangle } from "../utils/utils";
 
 export class Player {
     private score: number = 0;
     private life_points: number = 3;
     private position: Position2D = {x:0 , y:0};
+    private readonly width = 70;
+    private readonly hieght = 10;
 
     constructor(pos: Position2D) {
         this.position = pos;
+
     }
 
     GetScore(): number {
@@ -32,5 +35,9 @@ export class Player {
 
     SetPosition(new_pos: Position2D): void {
         this.position = new_pos;
+    }
+
+    GetShape(): Rectangle {
+        return {pos: this.position, w: this.width, h: this.hieght};
     }
 }

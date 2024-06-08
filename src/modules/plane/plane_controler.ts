@@ -1,5 +1,5 @@
 
-import { Actor, Direction } from "../boat_game";
+import { Actor, Direction } from "../utils/utils";
 import { Plane } from "./plane";
 import { PlaneDisplay } from "./plane_display";
 import { Events } from "../events/events";

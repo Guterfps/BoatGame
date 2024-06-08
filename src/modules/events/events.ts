@@ -21,4 +21,8 @@ export class Events {
     EventNotify(event: string, args: any | null): void {
         this.map.get(event)?.forEach((handle) => { handle(args) });
     }
+
+    Clear(): void {
+        this.map.clear();
+    }
 }

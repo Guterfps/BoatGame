@@ -1,11 +1,13 @@
 
-import { Position2D } from "../boat_game";
+import { Position2D, Rectangle } from "../utils/utils";
 
 export class Parachute {
     private position: Position2D;
+    private readonly width = 20;
+    private readonly hiegth = 30;
 
-    constructor(x = 0, y = 0) {
-        this.position = {x, y};
+    constructor(pos: Position2D) {
+        this.position = pos;
     }
 
     GetPosition(): Position2D {
@@ -14,5 +16,9 @@ export class Parachute {
 
     SetPosition(new_pos: Position2D): void {
         this.position = new_pos;
+    }
+
+    GetShape(): Rectangle {
+        return {pos: this.position, w: this.width, h: this.hiegth};
     }
 }

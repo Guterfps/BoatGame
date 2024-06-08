@@ -4,31 +4,15 @@ import { PlayerController, Player, PlayerDisplay } from "./player/modules";
 import { PlaneController, Plane, PlaneDisplay } from "./plane/modules" ;
 import { ParachuteController, Parachute, ParachuteDisplay } from "./parachute/modules";
 import { Events } from "./events/events";
-
-export interface Actor {
-    TakeInput(): void;
-    Update(events: Events): void;
-    Draw(): void;
-}
-
-export class Position2D {
-    x: number;
-    y: number;
-
-    constructor(x = 0, y = 0) {
-        this.x = x;
-        this.y = y;
-    }
-}
-
-export enum GameState { RUN, PUSE, GAME_OVER, EXIT };
-export enum Direction { LEFT = -1, RIGHT = 1, UP = -1, DOWN = 1, NONE = 0};
+import { GameState, Actor, Position2D } from "./utils/utils";
+import { RectCollisionDetector } from "./collision_detector/rect_collision";
 
 export class BoatGame {
     private state = GameState.PUSE;
     private renderer = new Renderer();
     private actors = new Array<Actor>;
     private events = new Events;
+    private final_score = 0;
 
     constructor() {
         this.Run = this.Run.bind(this);
@@ -47,32 +31,54 @@ export class BoatGame {
 
     Init() {
         this.state = GameState.RUN;
-        this.AddActor(new PlayerController(
+        let player_ctrl = new PlayerController(
                         new Player(new Position2D(400, 400)), 
-                        new PlayerDisplay(this.renderer)));
+                        new PlayerDisplay(this.renderer));
+        
+        this.AddActor(player_ctrl);
         this.AddActor(new PlaneController(
                         new Plane(this.renderer.GetWidth(), 50),
                         new PlaneDisplay(this.renderer)));
         
         this.events.AddEventNotify("spawn parachute", 
-                                (pos: Position2D) => {
-                        this.AddActor(new ParachuteController(
-                            new Parachute(pos.x, pos.y),
-                            new ParachuteDisplay(this.renderer)));
-                    });
-        this.events.AddEventNotify("despawn parachute", 
-                        (actor: Actor) => {
-                            this.RemoveActor(actor);
-                        });
+        (pos: Position2D) => {
+            this.AddActor(new ParachuteController(
+                new Parachute(new Position2D(pos.x, pos.y)),
+                new ParachuteDisplay(this.renderer),
+                new RectCollisionDetector(player_ctrl.GetPlayerShape())));
+        });
+        this.events.AddEventNotify("parachute died", 
+        (parachute: Actor) => {
+            player_ctrl.ChangeLifePoints(-1);
+            this.RemoveActor(parachute);
+        });
+        this.events.AddEventNotify("boat collision", 
+        (parachute: Actor) => {
+            player_ctrl.IncreseScore(1);
+            this.RemoveActor(parachute);
+        });
+        this.events.AddEventNotify("player loss", (score: number) => {
+            this.state = GameState.GAME_OVER;
+            this.final_score = score;
+        });
     }
 
     Run() {
         if (this.state !== GameState.EXIT) {
-            this.HandleInput();
-            this.UpdateGame();
-            
-            this.renderer.Clear();
-            this.Display();
+            switch (this.state) {
+                case GameState.RUN:
+                    this.HandleInput();
+                    this.UpdateGame();
+                    
+                    this.renderer.Clear();
+                    this.Display();
+                    break;
+                case GameState.GAME_OVER:
+                    this.DisplayGameOver();
+                    document.addEventListener("click", this.ResetGame);
+                    break;
+            };
+
             requestAnimationFrame(this.Run);
         }
     }
@@ -85,16 +91,38 @@ export class BoatGame {
         this.state = new_state;
     }
 
-    private HandleInput() {
+    private HandleInput(): void {
         this.actors.forEach((act) => {act.TakeInput()});
     }
 
-    private UpdateGame() {
+    private UpdateGame(): void {
         this.actors.forEach((act) => {act.Update(this.events)});
     }
 
-    private Display() {
+    private Display(): void {
         this.actors.forEach((act) => {act.Draw()});
+    }
+
+    private DisplayGameOver(): void {
+        let ctx = this.renderer.context;
+        ctx.font = "32px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText(`Game Over Final Score: ${this.final_score}`, 
+                    this.renderer.GetWidth() / 2, 
+                    this.renderer.GetHeight() / 2);
+        ctx.fillText(`Click to restart`, 
+                    this.renderer.GetWidth() / 2, 
+                    this.renderer.GetHeight() / 2 + 50);
+    }
+
+    private ResetGame = (): void => {
+        this.actors = new Array<Actor>;
+        this.events.Clear();
+        this.final_score = 0;
+        
+        this.Init();
+
+        document.removeEventListener("click", this.ResetGame);
     }
 }
 
