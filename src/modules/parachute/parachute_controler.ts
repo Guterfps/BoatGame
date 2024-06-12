@@ -9,7 +9,7 @@ export class ParachuteController implements Actor {
     private Parachute: Parachute;
     private display: ParachuteDisplay;
     private direction = Direction.DOWN;
-    private speed = 1;
+    private speed = 2;
     private dy = 0;
     private boat_detector: RectCollisionDetector;
 

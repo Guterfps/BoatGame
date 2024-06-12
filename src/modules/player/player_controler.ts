@@ -1,5 +1,5 @@
 
-import { Actor, Direction, Rectangle } from "../utils/utils";
+import { Actor, Direction, Position2D, Rectangle } from "../utils/utils";
 import { Player } from "./player";
 import { PlayerDisplay } from "./player_display";
 import { Events } from "../events/events";
@@ -18,6 +18,8 @@ export class PlayerController implements Actor {
         document.addEventListener("keydown", this.HandleKeyDown, false);
         document.addEventListener("keyup", this.HandleKeyUp, false);
         document.addEventListener("mousemove", this.HandleMouseMove, false);
+        document.addEventListener("touchstart", this.HandleTouch);
+        document.addEventListener("touchmove", this.HandleTouch);
     }
     
     TakeInput(): void {
@@ -82,15 +84,25 @@ export class PlayerController implements Actor {
     }
 
     private HandleMouseMove = (event: MouseEvent) => {
+        this.player.SetPosition(this.LimitMoveX(event.clientX));
+    }
+
+    private HandleTouch = (event: TouchEvent) => {
+        if (event.touches) {
+            this.player.SetPosition(this.LimitMoveX(event.touches[0].pageX));
+        }
+    }
+
+    private LimitMoveX(move: number): Position2D {
         const canvas = this.display.GetRenderer().canvas;
-        const relativeX = event.clientX - canvas.offsetLeft;
+        const relative_x = move - canvas.offsetLeft; 
         const mid_shape = this.player.GetShape().w / 2;
         let new_pos = this.player.GetPosition();
-        if (((relativeX - mid_shape) > 0) && 
-            ((relativeX + mid_shape) < canvas.width)) {
-            new_pos.x = relativeX - mid_shape;
+        if (((relative_x - mid_shape) > 0) && 
+            ((relative_x + mid_shape) < canvas.width)) {
+            new_pos.x = relative_x - mid_shape;
         }
 
-        this.player.SetPosition(new_pos);
+        return new_pos;
     }
 }
